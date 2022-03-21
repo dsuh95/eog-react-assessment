@@ -6,6 +6,7 @@ import {
   gql,
   InMemoryCache,
 } from '@apollo/client';
+import { LineChart, Line } from 'recharts';
 import { useGeolocation } from 'react-use';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Typography } from '@material-ui/core';
@@ -27,6 +28,7 @@ const query = gql`
     }
   }
 `;
+const WeatherDataList: WeatherData[] = [];
 
 type WeatherData = {
   temperatureinCelsius: number;
@@ -54,9 +56,19 @@ const Weather: FC = () => {
   if (error) return <Typography color="error">{error}</Typography>;
   if (!data) return <Chip label="Weather not found" />;
   const { locationName, description, temperatureinCelsius } = data.getWeatherForLocation;
+  WeatherDataList.push(data.getWeatherForLocation);
+  if (WeatherDataList.length > 23) {
+    WeatherDataList.pop();
+  }
 
   return <Chip label={`Weather in ${locationName}: ${description} and ${Math.round(toF(temperatureinCelsius))}°`} />;
 };
+
+const graphWeather: FC = () => (
+  <LineChart width={400} height={400} data={WeatherDataList}>
+    <Line type="monotone" dataKey="uv" stroke="#8884d8" />;
+  </LineChart>
+);
 
 export default () => (
   <ApolloProvider client={client}>
