@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import {
   LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Legend,
 } from 'recharts';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toC, toF } from '../Features/Weather/weatherSlice';
 
 //  I was unable to see any schemas or any information in the API Documentation
 //    so I simply implemented a graphing feature for temperature.
@@ -12,10 +13,11 @@ import { useSelector } from 'react-redux';
 //    be removed and the readings will be automatically fetched every 1.3 minutes.
 
 const WeatherGraph = () => {
+  const dispatch = useDispatch();
   const [metric, setMetric] = useState('c');
-  const toFahrenheit = (c) => (c * 9) / 5 + 32;
 
   const weather = useSelector((state) => state.weather.value);
+  console.log(weather);
 
   useEffect(() => {
 
@@ -24,8 +26,10 @@ const WeatherGraph = () => {
   const toggleMetric = () => {
     if (metric === 'c') {
       setMetric('f');
+      dispatch(toF());
     } else if (metric === 'f') {
       setMetric('c');
+      dispatch(toC());
     }
   };
 
@@ -38,12 +42,12 @@ const WeatherGraph = () => {
             {metric === 'c'
               ? (
                 <h2>
-                  Current Temperature in Celsius: {weather[0].temperatureinCelsius}
+                  Latest Temperature in Celsius: {weather[0].temperatureinCelsius}
                 </h2>
               )
               : (
                 <h2>
-                  Current Temperature in Fahrenheit: {toFahrenheit(weather[0].temperatureinCelsius)}
+                  Latest Temperature in Fahrenheit: {weather[0].temperatureinCelsius}
                 </h2>
               )}
           </div>
