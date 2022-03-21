@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './components/Header';
 import Wrapper from './components/Wrapper';
 import NowWhat from './components/NowWhat';
-import WeatherGraph from './components/weatherGraph';
+import WeatherGraph from './components/WeatherGraph';
 
 const theme = createTheme({
   palette: {
@@ -23,17 +23,15 @@ const theme = createTheme({
 });
 
 const App = () => (
-  <div>
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <Wrapper>
-        <Header />
-        <WeatherGraph />
-        <NowWhat />
-        <ToastContainer />
-      </Wrapper>
-    </MuiThemeProvider>
-  </div>
+  <MuiThemeProvider theme={theme}>
+    <CssBaseline />
+    <Wrapper>
+      <Header />
+      <WeatherGraph />
+      <NowWhat />
+      <ToastContainer />
+    </Wrapper>
+  </MuiThemeProvider>
 );
 
 export default App;
