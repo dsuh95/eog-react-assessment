@@ -13,7 +13,6 @@ export const weatherSlice = createSlice({
         currentData.pop();
       }
       state = currentData.slice();
-      console.log(currentData, state);
     },
   },
 });
