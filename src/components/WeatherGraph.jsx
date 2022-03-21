@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import React from 'react';
 import {
   LineChart, Line, ResponsiveContainer, CartesianGrid, XAxis, YAxis, Legend,
@@ -12,32 +12,48 @@ import { useSelector } from 'react-redux';
 //    be removed and the readings will be automatically fetched every 1.3 minutes.
 
 const WeatherGraph = () => {
-  const [celsius, setCelsius] = useState(true);
-  // const toFahrenheit = (c) => (c * 9) / 5 + 32;
+  const [metric, setMetric] = useState('c');
+  const toFahrenheit = (c) => (c * 9) / 5 + 32;
 
   const weather = useSelector((state) => state.weather.value);
-  const weatherF = weather.slice();
-  // weatherF.forEach(entry => {
-  //   const tempC = entry.temperatureinCelsius;
-  //   entry.temperatureinCelsius = toFahrenheit(tempC);
-  //   return entry;
-  // });
+
+  useEffect(() => {
+
+  }, [metric]);
+
+  const toggleMetric = () => {
+    if (metric === 'c') {
+      setMetric('f');
+    } else if (metric === 'f') {
+      setMetric('c');
+    }
+  };
 
   return (
     <div id='weatherGraph' margin={{ top: 50 }}>
       {
       weather[0]
         ? (
-          <h2>
-            Current Temperature in C: {weather[0].temperatureinCelsius}
-          </h2>
+          <div>
+            {metric === 'c'
+              ? (
+                <h2>
+                  Current Temperature in Celsius: {weather[0].temperatureinCelsius}
+                </h2>
+              )
+              : (
+                <h2>
+                  Current Temperature in Fahrenheit: {toFahrenheit(weather[0].temperatureinCelsius)}
+                </h2>
+              )}
+          </div>
         )
         : null
       }
-      <button type='button' onClick={() => setCelsius(!celsius)}>Toggle C/F</button>
+      <button type='button' onClick={() => toggleMetric()}>Toggle C/F</button>
       <ResponsiveContainer width='100%' aspect={3}>
         {
-        celsius
+        metric === 'c'
           ? (
             <LineChart width={50} height={50} margin={{ top: 50 }} data={weather}>
               <Legend verticalAlign="bottom" height={36} />
@@ -48,7 +64,7 @@ const WeatherGraph = () => {
             </LineChart>
           )
           : (
-            <LineChart width={50} height={50} margin={{ top: 50 }} data={weatherF}>
+            <LineChart width={50} height={50} margin={{ top: 50 }} data={weather}>
               <Legend verticalAlign="bottom" height={36} />
               <Line name='Temperature In Fahrenheit' type="monotone" dataKey="temperatureinCelsius" stroke="darkred" />;
               <CartesianGrid stroke="yellow" />
