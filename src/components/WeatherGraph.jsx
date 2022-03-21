@@ -17,7 +17,6 @@ const WeatherGraph = () => {
   const [metric, setMetric] = useState('c');
 
   const weather = useSelector((state) => state.weather.value);
-  console.log(weather);
 
   useEffect(() => {
 
