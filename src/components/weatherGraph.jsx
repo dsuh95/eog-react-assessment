@@ -7,6 +7,12 @@ import { useSelector } from 'react-redux';
 const WeatherGraph = () => {
   const weather = useSelector((state) => state.weather.value);
 
+  //  I was unable to see any schemas or any information in the API Documentation
+  //    so I simply implemented a graphing feature for temperature.
+  //  A button to add entries was added to the header in the Weather.tsx file
+  //    but what I'm thinking in terms of the future is that the button will
+  //    be removed and the readings will be automatically fetched every 1.3 minutes.
+
   return (
     <div id='weatherGraph' margin={{ top: 50 }}>
       {
